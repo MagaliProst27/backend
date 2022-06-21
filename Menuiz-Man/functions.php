@@ -4,7 +4,7 @@ class ModeleProduct {
 private $idc;
 private function connexion() {
 
-$this->idc = new PDO("mysql:host=localhost;  dbname=menuiz", 'root', '');
+$this->idc = new PDO("mysql:host=localhost;  dbname=menuiz-jo", 'root', '');
 }
 
 //Fonction pour afficher tous les produits

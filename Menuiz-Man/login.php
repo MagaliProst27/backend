@@ -2,16 +2,18 @@
  
 session_start();
 include("infos.php");
-include("modelUsers.php");
+include("ModelUser.php");
 @$valider = $_POST["valider"];
 $erreur = "";
 if (isset($valider)) {
-    $userM = new ModelUsers(0);
+    $userMail = new ModeleUser(0);
+    $userPass=new ModeleUser(0);
 // include("connexion.php");
-$utilisateur = $userM->RecupUserByMail($email)->fetchAll();
+$utilisateur = $userMail->RecupUserByMail($email)->fetchAll();
+$password = $userPass->RecupPassword($password, $email)->fetchAll();
         
 // s'il ya un utilisateur en bdd avec l'email saisi
-if (!empty($utilisateur[0])){
+if (!empty($utilisateur[0]) && !empty($password[0])){
 $_SESSION["prenom_nom"] = "Moi";
 // ucfirst(strtolower($user[0]["prenom"])) .
 // " "  .  strtoupper($user[0]["nom"]);
@@ -44,11 +46,11 @@ margin-top: -100px;
 h1 {
 text-align: center;
 color: #FFFAFA;
-background: gray;
+background: blue;
 }
  
 input[type=submit] {
-border: solid  1px  violet;
+border: solid  1px  blue;
 margin-bottom: 10px;
 float: right;
 padding: 15px;
@@ -56,9 +58,9 @@ outline: none;
 border-radius: 7px;
 width: 120px;
 }
-input[type=text],
+input[type=email],
 [type=password] {
-border: solid  1px  violet;
+border: solid  1px  blue;
 margin-bottom: 10px;
 padding: 16px;
 outline: none;
@@ -82,11 +84,11 @@ text-decoration: underline;
 }
 </style>
 </head>
-<body >
+<body>
 <h1>Authentification</h1>
 <div  class="erreur"><?php  echo  $erreur  ?></div>
 <form  name="form"  method="post"  action="">
-<input  type="email"  name="email"  placeholder="Votre email"  /><br  />
+<input  type="email"  name="email"  placeholder="Votre Email"  /><br  />
 <input  type="password"  name="password"  placeholder="Mot de passe"  /><br  />
 <input  type="submit"  name="valider"  value="S'authentifier"  />
 <a  href="inscription.php">Créer votre Compte</a>
