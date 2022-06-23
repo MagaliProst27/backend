@@ -1,12 +1,14 @@
 <?php
-
+require_once __DIR__ . '/../include/init.php';
 class ModeleAddress
 {
+    
     private $idc;
     private function connexion()
     {
 
         $this->idc = new PDO("mysql:host=localhost;  dbname=menuiz", 'root', '');
+     
     }
 
     //Fonction pour afficher une adresse par rapport à son identifiant
@@ -62,6 +64,43 @@ class ModeleAddress
     }
 
 
+     //Fonction pour vérifier qu'une adresse saisie n'existe pas déjà pour l'utilisateur
+     public function VerifAddressByUser($usrid,$adrSaisie)
+     {
+         $this->connexion();
+         $query="
+         select adr_id
+         from t_d_address_adr adr 
+         inner join t_d_orderheader_ohr ohr on adr.ADR_ID=ohr.ADR_ID_FAC 
+         where usr_id=" . $usrid . " and adr_firstname + ' ' + adr_lastname  + CHAR(13) +
+         adr_line1 + CHAR(13) + adr_line2 + CHAR(13) +
+         adr_line3 + CHAR(13) + 
+         adr_zipcode + ' ' + adr_city + CHAR(13)
+         + adr_country= '". $adrSaisie . "' 
+         union
+         select adr_id
+         from t_d_address_adr adr 
+         inner join t_d_orderheader_ohr ohr on adr.ADR_ID=ohr.ADR_ID_liv  
+         where  USR_ID=" . $usrid . "  and adr_firstname + ' ' + adr_lastname  + CHAR(13) +
+         adr_line1 + CHAR(13) + adr_line2 + CHAR(13) +
+         adr_line3 + CHAR(13) + 
+         adr_zipcode + ' ' + adr_city + CHAR(13)
+         + adr_country= '". $adrSaisie . "' 
+         union 
+         select adr.adr_id
+         from t_d_address_adr adr 
+         inner join t_d_user_usr usr on adr.ADR_ID=usr.ADR_ID  
+         where  USR_ID= " . $usrid . "  and adr_firstname + ' ' + adr_lastname  + CHAR(13) +
+         adr_line1 + CHAR(13) + adr_line2 + CHAR(13) +
+         adr_line3 + CHAR(13) + 
+         adr_zipcode + ' ' + adr_city + CHAR(13)
+         + adr_country= '". $adrSaisie . "';";
+         $res = $this->idc->prepare($query);
+         $res->execute();
+         return $res;
+     }
+
+
 
     public function InsertAddress($firstname, $lastname,
      $line1, $line2,$line3,
@@ -114,4 +153,3 @@ class ModeleAddress
   
 }
 ?>
-
