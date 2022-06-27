@@ -1,0 +1,35 @@
+CREATE TABLE t_d_savfile_svf (
+   SVF_ID int AUTO_INCREMENT PRIMARY KEY,
+   SVF_STATUS VARCHAR (50),
+   SVF_CREATIONTIME DATETIME,
+    OHR_NUMBER VARCHAR (30)
+   
+);
+
+
+
+
+
+INSERT INTO `t_d_usertype_uty`(`UTY_ID`, `UTY_TYPE`) VALUES (3, 'Technicien Hotline'), (4,'Technicien SAV').
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
