@@ -59,7 +59,7 @@ class ModeleOrderDetail
         ]);
 
         // on retourne le dernier id
-        return $id = $this->idc->lastInsertId();;
+        return $id = $this->idc->lastInsertId();
     }
 
   

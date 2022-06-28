@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 27 juin 2022 à 16:33
+-- Généré le : mar. 28 juin 2022 à 11:02
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -57,6 +57,28 @@ INSERT INTO `t_d_address_adr` (`ADR_ID`, `ADR_FIRSTNAME`, `ADR_LASTNAME`, `ADR_L
 (16, 'toto', 'toto', 'toto', '24540', '', '24540', 'toto', 'fr', 'toto', '02'),
 (17, 'tot', 'tot', 't', '', '', '24568', 'ger', 'fr', 'to', '02'),
 (18, 'titi', 'titi', 'titi', '', '', 'titi', 'titi', 'titi', 'titi', 'titi');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `t_d_diagnostic_dgc`
+--
+
+CREATE TABLE `t_d_diagnostic_dgc` (
+  `DGC_ID` int(11) NOT NULL,
+  `DGC_STATUS` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `t_d_diagnostic_dgc`
+--
+
+INSERT INTO `t_d_diagnostic_dgc` (`DGC_ID`, `DGC_STATUS`) VALUES
+(1, 'NPAI'),
+(2, 'NP'),
+(3, 'EC'),
+(4, 'EP'),
+(5, 'SAV');
 
 -- --------------------------------------------------------
 
@@ -316,14 +338,61 @@ INSERT INTO `t_d_product_prd` (`PRD_ID`, `SPL_ID`, `PTY_ID`, `PRD_DESCRIPTION`, 
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `t_d_savdetails_svl`
+--
+
+CREATE TABLE `t_d_savdetails_svl` (
+  `SVL_ID` int(11) NOT NULL,
+  `SVL_STATUS` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `t_d_savdetails_svl`
+--
+
+INSERT INTO `t_d_savdetails_svl` (`SVL_ID`, `SVL_STATUS`) VALUES
+(1, 'non traité'),
+(2, 'en cours de traitement'),
+(3, 'traité'),
+(4, 'annulé');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `t_d_savfile_svf`
 --
 
 CREATE TABLE `t_d_savfile_svf` (
   `SVF_ID` int(11) NOT NULL,
-  `SVF_STATUS` varchar(50) DEFAULT NULL,
-  `SVF_CREATIONTIME` datetime DEFAULT NULL
+  `SVF_COMM` varchar(500) DEFAULT NULL,
+  `SVF_CREATIONTIME` datetime DEFAULT NULL,
+  `SVF_IP` varchar(10) DEFAULT NULL,
+  `USR_ID` int(11) DEFAULT NULL,
+  `OHR_ID` int(11) DEFAULT NULL,
+  `SVL_ID` int(11) DEFAULT NULL,
+  `DGC_ID` int(11) DEFAULT NULL,
+  `UTY_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `t_d_stockmovement_smt`
+--
+
+CREATE TABLE `t_d_stockmovement_smt` (
+  `SMT_ID` int(11) NOT NULL,
+  `SMT_PLACE` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `t_d_stockmovement_smt`
+--
+
+INSERT INTO `t_d_stockmovement_smt` (`SMT_ID`, `SMT_PLACE`) VALUES
+(1, 'Stock principal'),
+(2, 'Stock SAV'),
+(3, 'Rebus');
 
 -- --------------------------------------------------------
 
@@ -401,7 +470,8 @@ INSERT INTO `t_d_user_usr` (`USR_ID`, `ADR_ID`, `USR_MAIL`, `USR_PASSWORD`, `USR
 (8, NULL, 'pu@gmail.com', 'b70f7d0e2acef2e0fa1c6f117e3c11e0d7082232', 'pi', 'pa', 1),
 (9, NULL, 'ft@hotmail.fr', 'b70f7d0e2acef2e0fa1c6f117e3c11e0d7082232', 'ft', 'ft', 1),
 (10, NULL, 'toto@gmail.com', '0b9c2625dc21ef05f6ad4ddf47c5f203837aa32c', 'toto', 'toto', 1),
-(11, NULL, 'titi@gmail.com', 'f7e79ca8eb0b31ee4d5d6c181416667ffee528ed', 'titi', 'titi', 1);
+(11, NULL, 'titi@gmail.com', 'f7e79ca8eb0b31ee4d5d6c181416667ffee528ed', 'titi', 'titi', 1),
+(12, NULL, 'pppp@pppp.fr', 'e170f80139aac716ebca4320121de416231b4109', 'lolo', 'lolo', 1);
 
 --
 -- Index pour les tables déchargées
@@ -412,6 +482,12 @@ INSERT INTO `t_d_user_usr` (`USR_ID`, `ADR_ID`, `USR_MAIL`, `USR_PASSWORD`, `USR
 --
 ALTER TABLE `t_d_address_adr`
   ADD PRIMARY KEY (`ADR_ID`);
+
+--
+-- Index pour la table `t_d_diagnostic_dgc`
+--
+ALTER TABLE `t_d_diagnostic_dgc`
+  ADD PRIMARY KEY (`DGC_ID`);
 
 --
 -- Index pour la table `t_d_expeditiontype_ety`
@@ -479,10 +555,27 @@ ALTER TABLE `t_d_product_prd`
   ADD KEY `FK_PROVIENT_DE` (`SPL_ID`);
 
 --
+-- Index pour la table `t_d_savdetails_svl`
+--
+ALTER TABLE `t_d_savdetails_svl`
+  ADD PRIMARY KEY (`SVL_ID`);
+
+--
 -- Index pour la table `t_d_savfile_svf`
 --
 ALTER TABLE `t_d_savfile_svf`
-  ADD PRIMARY KEY (`SVF_ID`);
+  ADD PRIMARY KEY (`SVF_ID`),
+  ADD KEY `OHR_ID` (`OHR_ID`),
+  ADD KEY `SVL_ID` (`SVL_ID`),
+  ADD KEY `DGC_ID` (`DGC_ID`),
+  ADD KEY `USR_ID` (`USR_ID`),
+  ADD KEY `UTY_ID` (`UTY_ID`);
+
+--
+-- Index pour la table `t_d_stockmovement_smt`
+--
+ALTER TABLE `t_d_stockmovement_smt`
+  ADD PRIMARY KEY (`SMT_ID`);
 
 --
 -- Index pour la table `t_d_supplier_spl`
@@ -569,10 +662,22 @@ ALTER TABLE `t_d_product_prd`
   MODIFY `PRD_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT pour la table `t_d_savdetails_svl`
+--
+ALTER TABLE `t_d_savdetails_svl`
+  MODIFY `SVL_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT pour la table `t_d_savfile_svf`
 --
 ALTER TABLE `t_d_savfile_svf`
   MODIFY `SVF_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `t_d_stockmovement_smt`
+--
+ALTER TABLE `t_d_stockmovement_smt`
+  MODIFY `SMT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `t_d_supplier_spl`
@@ -590,7 +695,7 @@ ALTER TABLE `t_d_usertype_uty`
 -- AUTO_INCREMENT pour la table `t_d_user_usr`
 --
 ALTER TABLE `t_d_user_usr`
-  MODIFY `USR_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `USR_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Contraintes pour les tables déchargées
@@ -628,6 +733,16 @@ ALTER TABLE `t_d_productkit_kit`
 ALTER TABLE `t_d_product_prd`
   ADD CONSTRAINT `FK_EST_DE_TYPE` FOREIGN KEY (`PTY_ID`) REFERENCES `t_d_producttype_pty` (`PTY_ID`),
   ADD CONSTRAINT `FK_PROVIENT_DE` FOREIGN KEY (`SPL_ID`) REFERENCES `t_d_supplier_spl` (`SPL_ID`);
+
+--
+-- Contraintes pour la table `t_d_savfile_svf`
+--
+ALTER TABLE `t_d_savfile_svf`
+  ADD CONSTRAINT `t_d_savfile_svf_ibfk_1` FOREIGN KEY (`OHR_ID`) REFERENCES `t_d_orderheader_ohr` (`OHR_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `t_d_savfile_svf_ibfk_2` FOREIGN KEY (`SVL_ID`) REFERENCES `t_d_savdetails_svl` (`SVL_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `t_d_savfile_svf_ibfk_3` FOREIGN KEY (`DGC_ID`) REFERENCES `t_d_diagnostic_dgc` (`DGC_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `t_d_savfile_svf_ibfk_4` FOREIGN KEY (`USR_ID`) REFERENCES `t_d_user_usr` (`USR_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `t_d_savfile_svf_ibfk_5` FOREIGN KEY (`UTY_ID`) REFERENCES `t_d_usertype_uty` (`UTY_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
