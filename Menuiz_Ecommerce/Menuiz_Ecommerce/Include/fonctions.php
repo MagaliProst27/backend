@@ -89,6 +89,46 @@ function adminSecurity()
         die;
     }
 }
+// fait par Magali 
+function isUserSAVtech()
+{
+return isUserConnected()
+    && $_SESSION['utilisateur']['role']== 'SAVtech';
+
+}
+
+function isUserHotlineTech()
+{
+return isUserConnected()
+ && $_SESSION['utilisateur']['role']=='HotlineTech';
+}
+
+function techSavSecurity()
+{
+    if (!isUserSAVtech() && !isUserVisitor()) {
+        if (!isUserConnected()) {
+            header('location: ' . RACINE_WEB . 'connexion.php');
+        } else {
+            header('HTTP/1.1 403 Forbidden');
+            echo "Vous n'avez pas le droit d'acceder à cette page";
+        }
+    }
+}
+
+function hotlineTechSecurity()
+{
+    if (!isUserHotlineTech() && !isUserVisitor()) {
+        if (!isUserConnected()) {
+            header('location: ' . RACINE_WEB . 'connexion.php');
+        } else {
+            header('HTTP/1.1 403 Forbidden');
+            echo "Vous n'avez pas le droit d'acceder à cette page";
+        }
+    }
+}
+//fin 
+
+
 //region 'Panier'
 function prixFR($prix)
 {
