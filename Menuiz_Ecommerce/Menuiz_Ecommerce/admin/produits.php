@@ -46,7 +46,7 @@ require __DIR__ . '/../layout/top.php';
     ?>
     <tr>
         <td><?= $item['PRD_ID']; ?></td>
-        <td><?= $item['PRD_Code']; ?></td>
+        <td><?= $item['PRD_CODE']; ?></td>
         <td><?= $item['PRD_DESCRIPTION']; ?></td>
         <td><?= $item['PTY_DESCRIPTION']; ?></td>
         <td><?=  prixFR($item['PRD_PRICE']); ?></td>

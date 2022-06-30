@@ -124,7 +124,7 @@
     ?>
     <nav class="navbar navbar-expand-md navbar-light " style="background-color: #e3f2fd;">
         <div class="container navbar-nav">
-            <img class="logo headLogo" src="<?= IMG_WEB; ?>MenuizMan_logo.png" alt="logo">
+            <img class="logo headLogo" src="MenuizMan_logo.png" alt="logo">
             <a class="navbar-brand" href="<?= RACINE_WEB; ?>index.php">Boutique</a>
 
             <ul class="navbar-nav">

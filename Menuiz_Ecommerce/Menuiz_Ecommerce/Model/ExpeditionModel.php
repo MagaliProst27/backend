@@ -15,8 +15,8 @@ class ModeleExpedition
         $this->connexion();
         $res = $this->idc->prepare("select exp.* from t_d_expedition_exp exp 
                 where EXP_ID= " . $id . "");
-        $res->execute();
-        return $res;
+                $res->execute();
+                return $res;
     }
 
    

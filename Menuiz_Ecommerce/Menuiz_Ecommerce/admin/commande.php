@@ -112,4 +112,5 @@ require __DIR__ . '/../layout/top.php';
 
 <?php
 require __DIR__ . '/../layout/bottom.php';
+
 ?>
