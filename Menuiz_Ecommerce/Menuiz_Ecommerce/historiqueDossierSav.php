@@ -11,7 +11,8 @@ class historiqueSAV
     }
 public function numDossierSAV($id)
 {
-$res= $this->idc->prepare("SELECT HAV_ID from t_d_historysav_hav ");
+    $this -> connexion();
+$res= $this->idc->prepare("SELECT SVF_ID FROM `t_d_savfile_svf` SVF_ID= ".$id."");
 $res->execute();
         return $res;
 }
